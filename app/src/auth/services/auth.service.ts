@@ -4,7 +4,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Users } from '../../entities/users.entity';
 import { Repository } from 'typeorm';
 import { EmailExistError } from '../errors/email-exist-error';
-import { hashSync } from 'bcrypt';
 
 @Injectable()
 export class AuthService {
@@ -22,7 +21,7 @@ export class AuthService {
 
         await this.usersRepository.insert({
             email: authDto.email,
-            password: hashSync(authDto.password, 10),
+            password: authDto.getHashPassword(),
         });
     }
 }
