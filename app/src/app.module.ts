@@ -23,4 +23,4 @@ import { OrderModule } from './order/order.module';
   controllers: [],
   providers: [],
 })
-export class AppModule { }
+export class AppModule {}

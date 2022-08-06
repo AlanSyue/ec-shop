@@ -6,31 +6,34 @@ import { ProductNotFoundError } from '../errors/product-not-found-error';
 
 @Injectable()
 export class ProductService {
-    constructor(
-        @InjectRepository(Product)
-        private productRepository: Repository<Product>,
-    ) { }
+  constructor(
+    @InjectRepository(Product)
+    private productRepository: Repository<Product>,
+  ) {}
 
-    public async findAll(take: number, skip: number) {
-        const productData = await this.productRepository.findAndCount({take, skip})
+  public async findAll(take: number, skip: number) {
+    const productData = await this.productRepository.findAndCount({
+      take,
+      skip,
+    });
 
-        const products = productData[0].map((product) => {
-            return product.toObject()
-        })
+    const products = productData[0].map((product) => {
+      return product.toObject();
+    });
 
-        return {
-            products: products,
-            total: productData[1]
-        }
+    return {
+      products: products,
+      total: productData[1],
+    };
+  }
+
+  public async find(id: number) {
+    const product = await this.productRepository.findOneBy({ id: id });
+
+    if (!product) {
+      throw new ProductNotFoundError();
     }
 
-    public async find(id: number) {
-        const product = await this.productRepository.findOneBy({id: id})
-
-        if (!product) {
-            throw new ProductNotFoundError
-        }
-
-        return await product.toObject()
-    }
+    return await product.toObject();
+  }
 }

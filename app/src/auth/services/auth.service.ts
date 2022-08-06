@@ -8,43 +8,41 @@ import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
-    constructor(
-        @InjectRepository(User)
-        private userRepository: Repository<User>,
-        private jwtService: JwtService
-    ) { }
+  constructor(
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
+    private jwtService: JwtService,
+  ) {}
 
-    public async signup(authDto: AuthDto) {
-        const user = await this.userRepository.findOneBy({ email: authDto.email })
-
-        if (user) {
-            throw new EmailExistError()
-        }
-        
-        await this.userRepository.insert({
-            email: authDto.email,
-            password: authDto.getHashPassword(),
-        });
+  public async signup(authDto: AuthDto) {
+    const user = await this.userRepository.findOneBy({ email: authDto.email });
+    console.log(user)
+    if (user) {
+      throw new EmailExistError();
     }
 
-    public async login(user: User): Promise<any> {
-        const payload = { email: user.email, sub: user.id };
+    await this.userRepository.insert({
+      email: authDto.email,
+      password: authDto.getHashPassword(),
+    });
+  }
 
-        return {
-            access_token: this.jwtService.sign(payload),
-        };
+  public async login(user: User): Promise<any> {
+    const payload = { email: user.email, sub: user.id };
 
+    return {
+      access_token: this.jwtService.sign(payload),
+    };
+  }
+
+  public async validateUser(authDto: AuthDto): Promise<any> {
+    const user = await this.userRepository.findOneBy({ email: authDto.email });
+    if (user && await authDto.comparePassword(user.password)) {
+      const { ...result } = user;
+
+      return result;
     }
 
-    public async validateUser(authDto: AuthDto): Promise<any> {
-        const user = await this.userRepository.findOneBy({ email: authDto.email });
-        
-        if (user && authDto.comparePassword(user.password)) {
-            const { password, ...result } = user;
-            
-            return result;
-        }
-        
-        return null;
-    }
+    return null;
+  }
 }

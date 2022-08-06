@@ -1,9 +1,9 @@
-import { IsOptional } from 'class-validator'
+import { IsOptional } from 'class-validator';
 
 export class ProductQueryDto {
-    @IsOptional()
-    take: number
+  @IsOptional()
+  take: number;
 
-    @IsOptional()
-    skip: number
+  @IsOptional()
+  skip: number;
 }
