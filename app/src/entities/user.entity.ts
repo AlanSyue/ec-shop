@@ -1,7 +1,9 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column,OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Cart } from './cart.entity';
+import { Order } from './order.entity';
 
 @Entity()
-export class Users {
+export class User {
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -16,4 +18,10 @@ export class Users {
 
     @Column("timestamp", { precision: 3, default: () => "CURRENT_TIMESTAMP(3)", onUpdate: "CURRENT_TIMESTAMP(3)" })
     updatedAt: Date;
+
+    @OneToMany(() => Cart, (cart) => cart.user)
+    carts: Cart[]
+
+    @OneToMany(() => Order, (order) => order.user)
+    orders: Order[]
 }

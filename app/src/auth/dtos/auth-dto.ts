@@ -1,5 +1,5 @@
 import { IsNotEmpty, IsString, MinLength, MaxLength, IsEmail } from 'class-validator'
-import { hashSync } from 'bcrypt';
+import { hashSync, compare } from 'bcrypt';
 
 export class AuthDto {
     @IsEmail()
@@ -12,7 +12,14 @@ export class AuthDto {
     @MaxLength(20)
     password: string
 
-    public getHashPassword() {
+    public getHashPassword(): string {
         return hashSync(this.password, 10)
+    }
+
+    public async comparePassword(hashPassword: string): Promise<boolean> {
+        return await compare(
+            this.password,
+            hashPassword,
+        );
     }
 }

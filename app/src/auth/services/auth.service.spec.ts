@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AuthService } from './auth.service';
 import { EmailExistError } from '../errors/email-exist-error';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { Users } from '../../entities/users.entity';
+import { User } from '../../entities/user.entity';
 import { AuthDto } from '../dtos/auth-dto';
 
 describe('AuthService', () => {
@@ -12,7 +12,7 @@ describe('AuthService', () => {
   const mockUsersRepo = {
     findOneBy: jest.fn((dto: AuthDto) => {
       if (dto.email === '1') {
-        return Promise.resolve(new Users())
+        return Promise.resolve(new User())
       }
       return null
     }),
@@ -21,19 +21,18 @@ describe('AuthService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [Users],
       providers: [
         AuthService,
-        Users,
+        User,
         {
-          provide: getRepositoryToken(Users),
+          provide: getRepositoryToken(User),
           useValue: mockUsersRepo,
         },
       ],
     }).compile();
 
     service = module.get<AuthService>(AuthService);
-    repo = module.get(getRepositoryToken(Users))
+    repo = module.get(getRepositoryToken(User))
   });
 
   afterEach(() => {
