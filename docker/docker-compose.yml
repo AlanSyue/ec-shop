@@ -22,7 +22,7 @@ services:
     image: mysql
     command: mysqld --default-authentication-plugin=mysql_native_password
     volumes:
-      - ./volumes/data:/var/lib/mysql
+      - db-data:/var/lib/mysql
     ports:
       - ${MYSQL_PORT}:3306
     environment:
@@ -34,3 +34,6 @@ services:
       - bridge
 networks:
   bridge:
+
+volumes:
+  db-data:
