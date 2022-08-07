@@ -17,8 +17,8 @@ export class ProductController {
   @Get('')
   async findAll(@Query() query: ProductQueryDto) {
     try {
-      const take = query.take | 10;
-      const skip = query.skip | 0;
+      const take = query.take ?? 10;
+      const skip = query.skip ?? 0;
 
       const data = await this.service.findAll(take, skip);
 
