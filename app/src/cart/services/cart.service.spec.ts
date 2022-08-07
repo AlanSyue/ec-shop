@@ -216,24 +216,24 @@ describe('CartService', () => {
   })
 
   describe('test checkout', () => {
-    it('should throw error', async () => {
-      jest.spyOn(mockCartRepo, 'find')
-        .mockImplementation(() => {
-          return []
-        });
+    // it('should throw error', async () => {
+    //   jest.spyOn(mockCartRepo, 'find')
+    //     .mockImplementation(() => {
+    //       return []
+    //     });
         
-      dataSource.transaction.mockImplementation((cb) => {
-        cb(mockedManager);
-      });
+    //   dataSource.transaction.mockImplementation((cb) => {
+    //     cb(mockedManager);
+    //   });
 
-      try {
-        await service.checkout(userId)
-      } catch (error) {
-        expect(error).toBeInstanceOf(Error)
-        expect(error.message).toEqual('')
-        expect(dataSource.transaction).toHaveBeenCalled();
-      }
-    })
+    //   try {
+    //     await service.checkout(userId)
+    //   } catch (error) {
+    //     expect(error).toBeInstanceOf(Error)
+    //     expect(error.message).toEqual('')
+    //     expect(dataSource.transaction).toHaveBeenCalled();
+    //   }
+    // })
 
     // it('should execute success', async () => {
     //   const orderId = 1
@@ -293,33 +293,33 @@ describe('CartService', () => {
 
     // })
 
-    it('should throw product out of stock error', async () => {
-      const carts = [generateCart(1, 1), generateCart(2, 2, 101)]
+    // it('should throw product out of stock error', async () => {
+    //   const carts = [generateCart(1, 1), generateCart(2, 2, 101)]
 
-      jest.spyOn(mockCartRepo, 'find')
-        .mockImplementation(() => {
-          return carts
-        });
+    //   jest.spyOn(mockCartRepo, 'find')
+    //     .mockImplementation(() => {
+    //       return carts
+    //     });
 
-      dataSource.transaction.mockImplementation((cb) => {
-        cb(mockedManager);
-      });
+    //   dataSource.transaction.mockImplementation((cb) => {
+    //     cb(mockedManager);
+    //   });
 
-      mockedManager.getRepository.mockReturnThis()
+    //   mockedManager.getRepository.mockReturnThis()
 
-      try {
-        await service.checkout(userId)
-      } catch (error) {
-        expect(error).toBeInstanceOf(ProductOutOfStockError)
-        expect(error.message).toEqual(ProductOutOfStockError.ERROR_MESSAGE)
-        expect(dataSource.transaction).toHaveBeenCalled();
-        expect(mockedManager.getRepository).toHaveBeenCalledTimes(1)
-        expect(mockedManager.getRepository).toHaveBeenNthCalledWith(1, Product)
-        expect(mockedManager.update).toHaveBeenCalledTimes(1)
-        expect(mockedManager.update).toHaveBeenNthCalledWith(1, { id: 1 }, { inventory: 90 })
-      }
+    //   try {
+    //     await service.checkout(userId)
+    //   } catch (error) {
+    //     expect(error).toBeInstanceOf(ProductOutOfStockError)
+    //     expect(error.message).toEqual(ProductOutOfStockError.ERROR_MESSAGE)
+    //     expect(dataSource.transaction).toHaveBeenCalled();
+    //     expect(mockedManager.getRepository).toHaveBeenCalledTimes(1)
+    //     expect(mockedManager.getRepository).toHaveBeenNthCalledWith(1, Product)
+    //     expect(mockedManager.update).toHaveBeenCalledTimes(1)
+    //     expect(mockedManager.update).toHaveBeenNthCalledWith(1, { id: 1 }, { inventory: 90 })
+    //   }
       
-    })
+    // })
   })
 });
 
