@@ -36,88 +36,92 @@ describe('OrderController', () => {
 
   describe('test find all method', () => {
     it('should response ok', () => {
-      const request = { user : { id : 1} }
+      const request = { user: { id: 1 } };
 
-      const orders = [generateOrder(1)]
+      const orders = [generateOrder(1)];
       const ordersInfo = orders.map((order) => {
-        return generateOrderInfo(order)
-      })
+        return generateOrderInfo(order);
+      });
 
       const expected = ordersInfo.map((orderInfo: OrderInfo) => {
-        return orderInfo.toObject()
-      })
+        return orderInfo.toObject();
+      });
 
-      const serviceFindAllSpy = jest.spyOn(mockOrderService, 'findAll')
+      const serviceFindAllSpy = jest
+        .spyOn(mockOrderService, 'findAll')
         .mockImplementation(async () => {
-          return ordersInfo
+          return ordersInfo;
         });
 
       expect(controller.findAll(request)).toEqual(Promise.resolve(expected));
       expect(serviceFindAllSpy).toBeCalledTimes(1);
       expect(serviceFindAllSpy).toBeCalledWith(request.user.id);
     });
-  })
+  });
 
   describe('test find method', () => {
     it('should response ok', () => {
-      const response = {}
-      const request = { user: { id: 1 } }
-      const orderId = 1
-      const order = generateOrder(orderId)
-      const orderInfo = generateOrderInfo(order)
+      const response = {};
+      const request = { user: { id: 1 } };
+      const orderId = 1;
+      const order = generateOrder(orderId);
+      const orderInfo = generateOrderInfo(order);
 
-      const serviceFindSpy = jest.spyOn(mockOrderService, 'find')
+      const serviceFindSpy = jest
+        .spyOn(mockOrderService, 'find')
         .mockImplementation(async () => {
-          return orderInfo
+          return orderInfo;
         });
 
-      expect(controller.find(response as any, request, orderId)).toEqual(Promise.resolve(orderInfo.toObject()));
+      expect(controller.find(response as any, request, orderId)).toEqual(
+        Promise.resolve(orderInfo.toObject()),
+      );
       expect(serviceFindSpy).toBeCalledTimes(1);
       expect(serviceFindSpy).toBeCalledWith(request.user.id, orderId);
-    })
+    });
 
     it('should throw invalid order error', async () => {
       const mockResponse: Partial<Response> = {
         status: jest.fn().mockImplementation().mockReturnValue(404),
         json: jest.fn().mockImplementation().mockReturnValue({
           error_code: InvalidOrderError.ERROR_CODE,
-          error_message: InvalidOrderError.ERROR_MESSAGE
+          error_message: InvalidOrderError.ERROR_MESSAGE,
         }),
-      }
-      const orderId = 1
-      const request = { user: { id: 1 } }
+      };
+      const orderId = 1;
+      const request = { user: { id: 1 } };
 
-      const serviceFindSpy = jest.spyOn(mockOrderService, 'find')
+      const serviceFindSpy = jest
+        .spyOn(mockOrderService, 'find')
         .mockImplementation(async () => {
-          throw new InvalidOrderError()
+          throw new InvalidOrderError();
         });
 
-      const result = await controller.find(mockResponse as any, request, orderId)
-      expect(result).toBe(mockResponse.json())
+      const result = await controller.find(
+        mockResponse as any,
+        request,
+        orderId,
+      );
+      expect(result).toBe(mockResponse.json());
       expect(serviceFindSpy).toBeCalledTimes(1);
-    })
-  })
+    });
+  });
 });
 
 const generateOrder = (orderId: number): Order => {
-  const orderItem = new OrderItem()
-  const product = new Product()
-  product.name = 'product name'
-  orderItem.product = product
-  const order = new Order()
-  order.id = orderId
-  order.total = 1
-  order.amount = 1
-  order.orderItems = [orderItem]
+  const orderItem = new OrderItem();
+  const product = new Product();
+  product.name = 'product name';
+  orderItem.product = product;
+  const order = new Order();
+  order.id = orderId;
+  order.total = 1;
+  order.amount = 1;
+  order.orderItems = [orderItem];
 
-  return order
-}
+  return order;
+};
 
 const generateOrderInfo = (order: Order): OrderInfo => {
-  return new OrderInfo(
-    order.id,
-    order.total,
-    order.amount,
-    order.orderItems,
-  )
-}
+  return new OrderInfo(order.id, order.total, order.amount, order.orderItems);
+};

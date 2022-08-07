@@ -28,7 +28,7 @@ export class AuthController {
       return await this.service.signup(authDto);
     } catch (error) {
       if (error instanceof EmailExistError) {
-        res.status(EmailExistError.STATUS_CODE)
+        res.status(EmailExistError.STATUS_CODE);
         return res.json(error.getResponse());
       }
     }

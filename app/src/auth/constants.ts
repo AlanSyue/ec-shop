@@ -1,6 +1,6 @@
-import { config } from 'dotenv'
+import { config } from 'dotenv';
 
-config()
+config();
 
 export const jwtConstants = {
   secret: process.env.JWT_SECRET_KEY,
