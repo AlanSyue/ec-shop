@@ -1,16 +1,21 @@
-import { TypeOrmModuleOptions } from "@nestjs/typeorm"
-import { Users } from "./src/entities/users.entity"
+import { DataSource } from 'typeorm'
+import { config } from 'dotenv'
+import { SnakeNamingStrategy } from 'typeorm-naming-strategies'
 
-require("dotenv").config();
-const SnakeNamingStrategy = require("typeorm-naming-strategies").SnakeNamingStrategy
+config()
 
-export const config: TypeOrmModuleOptions = {
-    type: "mysql",
+export const AppDataSource = new DataSource({
+    type: 'mysql',
     host: process.env.APP_MYSQL_HOST,
+    port: 3306,
     username: process.env.APP_MYSQL_USER,
     password: process.env.APP_MYSQL_PASSWORD,
     database: process.env.APP_MYSQL_DATABASE,
-    entities: [Users],
-    synchronize: true,
+    entities: ['dist/**/*.entity.js'],
+    logging: false,
+    synchronize: false,
+    migrationsRun: false,
+    migrations: ['dist/**/migrations/*.js'],
+    migrationsTableName: 'history',
     namingStrategy: new SnakeNamingStrategy(),
-}
+})
