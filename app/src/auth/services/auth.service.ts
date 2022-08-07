@@ -16,7 +16,7 @@ export class AuthService {
 
   public async signup(authDto: AuthDto) {
     const user = await this.userRepository.findOneBy({ email: authDto.email });
-    console.log(user)
+
     if (user) {
       throw new EmailExistError();
     }
