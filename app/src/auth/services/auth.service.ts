@@ -37,7 +37,7 @@ export class AuthService {
 
   public async validateUser(authDto: AuthDto): Promise<any> {
     const user = await this.userRepository.findOneBy({ email: authDto.email });
-    if (user && await authDto.comparePassword(user.password)) {
+    if (user && (await authDto.comparePassword(user.password))) {
       const { ...result } = user;
 
       return result;

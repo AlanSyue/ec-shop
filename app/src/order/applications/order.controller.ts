@@ -40,7 +40,7 @@ export class OrderController {
       return { data: orderInfo.toObject() };
     } catch (error) {
       if (error instanceof InvalidOrderError) {
-        res.status(InvalidOrderError.STATUS_CODE)
+        res.status(InvalidOrderError.STATUS_CODE);
         return res.json(error.getResponse());
       }
 

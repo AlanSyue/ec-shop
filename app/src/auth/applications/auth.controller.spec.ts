@@ -54,9 +54,9 @@ describe('AuthController', () => {
         status: jest.fn().mockImplementation().mockReturnValue(400),
         json: jest.fn().mockImplementation().mockReturnValue({
           error_code: EmailExistError.ERROR_CODE,
-          error_message: EmailExistError.ERROR_MESSAGE
+          error_message: EmailExistError.ERROR_MESSAGE,
         }),
-      }
+      };
       const dto = new AuthDto();
       const serviceSignupSpy = jest
         .spyOn(service, 'signup')
@@ -66,27 +66,28 @@ describe('AuthController', () => {
 
       const result = await controller.signup(mockResponse as any, dto);
 
-      expect(result).toBe(mockResponse.json())
+      expect(result).toBe(mockResponse.json());
       expect(serviceSignupSpy).toBeCalledTimes(1);
-
     });
-  })
+  });
 
   describe('test login method', () => {
     it('should response ok', () => {
       const user = new User();
-      const tokenObject = { access_token: 'access token' }
+      const tokenObject = { access_token: 'access token' };
 
       const mockRequest = { user: user };
       const serviceLoginSpy = jest
         .spyOn(service, 'login')
         .mockImplementation(async () => {
-          return tokenObject
+          return tokenObject;
         });
 
-      expect(controller.login(mockRequest)).toEqual(Promise.resolve(tokenObject));
+      expect(controller.login(mockRequest)).toEqual(
+        Promise.resolve(tokenObject),
+      );
       expect(serviceLoginSpy).toBeCalledTimes(1);
       expect(serviceLoginSpy).toBeCalledWith(user);
     });
-  })
+  });
 });

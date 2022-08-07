@@ -47,9 +47,10 @@ describe('AuthService', () => {
       const authDto = new AuthDto();
       authDto.email = '1';
 
-      const repoFindOneBySpy = jest.spyOn(repo, 'findOneBy')
+      const repoFindOneBySpy = jest
+        .spyOn(repo, 'findOneBy')
         .mockImplementation(async () => {
-          return generateUser()
+          return generateUser();
         });
       const repoInsertSpy = jest.spyOn(repo, 'insert');
 
@@ -94,12 +95,13 @@ describe('AuthService', () => {
   describe('test login method', () => {
     it('should execute success', async () => {
       const user = new User();
-      user.id = 1
-      user.email = '1'
+      user.id = 1;
+      user.email = '1';
 
-      const jwtServiceSignSpy = jest.spyOn(mockJwtService, 'sign')
+      const jwtServiceSignSpy = jest
+        .spyOn(mockJwtService, 'sign')
         .mockImplementation(() => {
-          return 'access token'
+          return 'access token';
         });
 
       const result = await service.login(user);
@@ -109,7 +111,7 @@ describe('AuthService', () => {
       expect(jwtServiceSignSpy).toBeCalledTimes(1);
 
       expect(result).toEqual({
-        access_token: 'access token'
+        access_token: 'access token',
       });
     });
   });
@@ -122,59 +124,57 @@ describe('AuthService', () => {
       const authDtoComparePasswordSpy = jest
         .spyOn(authDto, 'comparePassword')
         .mockImplementation(async () => {
-          return true
+          return true;
         });
 
-      const repoFindOneBySpy = jest.spyOn(repo, 'findOneBy')
-        .mockImplementation(async () => {
-          return generateUser()
-        });
+      jest.spyOn(repo, 'findOneBy').mockImplementation(async () => {
+        return generateUser();
+      });
 
-      const result = await service.validateUser(authDto)
-      const user = new User()
-      user.email = '1'
-      user.password = '1'
-      expect(authDtoComparePasswordSpy).toBeCalledWith(authDto.password)
+      const result = await service.validateUser(authDto);
+      const user = new User();
+      user.email = '1';
+      user.password = '1';
+      expect(authDtoComparePasswordSpy).toBeCalledWith(authDto.password);
       expect(authDtoComparePasswordSpy).toBeCalledTimes(1);
-      expect(result).toEqual(user)
+      expect(result).toEqual(user);
     });
 
     it('should return null when not found user', async () => {
       const authDto = new AuthDto();
       authDto.email = '2';
 
-      const result = await service.validateUser(authDto)
-      expect(result).toEqual(null)
+      const result = await service.validateUser(authDto);
+      expect(result).toEqual(null);
     });
 
     it('should return null when password invalid', async () => {
       const authDto = new AuthDto();
       authDto.email = '1';
-      authDto.password = '1'
+      authDto.password = '1';
 
-      const repoFindOneBySpy = jest.spyOn(repo, 'findOneBy')
-        .mockImplementation(async () => {
-          return generateUser()
-        });
+      jest.spyOn(repo, 'findOneBy').mockImplementation(async () => {
+        return generateUser();
+      });
 
       const authDtoComparePasswordSpy = jest
         .spyOn(authDto, 'comparePassword')
         .mockImplementation(async () => {
-          return false
+          return false;
         });
 
-      const result = await service.validateUser(authDto)
-      expect(authDtoComparePasswordSpy).toBeCalledWith(authDto.password)
+      const result = await service.validateUser(authDto);
+      expect(authDtoComparePasswordSpy).toBeCalledWith(authDto.password);
       expect(authDtoComparePasswordSpy).toBeCalledTimes(1);
-      expect(result).toEqual(null)
+      expect(result).toEqual(null);
     });
   });
 });
 
 const generateUser = () => {
-  const user = new User()
-  user.email = '1'
-  user.password = '1'
+  const user = new User();
+  user.email = '1';
+  user.password = '1';
 
-  return user
-}
+  return user;
+};

@@ -1,11 +1,5 @@
 import { ProductService } from '../services/product.service';
-import {
-  Controller,
-  Get,
-  Res,
-  Query,
-  Param,
-} from '@nestjs/common';
+import { Controller, Get, Res, Query, Param } from '@nestjs/common';
 import { Response } from 'express';
 import { ProductQueryDto } from '../dtos/product-query-dto';
 import { ProductNotFoundError } from '../errors/product-not-found-error';
@@ -46,7 +40,7 @@ export class ProductController {
       };
     } catch (error) {
       if (error instanceof ProductNotFoundError) {
-        res.status(ProductNotFoundError.STATUS_CODE)
+        res.status(ProductNotFoundError.STATUS_CODE);
 
         return res.json(ProductNotFoundError.RESPONSE);
       }

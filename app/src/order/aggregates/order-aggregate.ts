@@ -27,7 +27,7 @@ export class OrderInfo {
         amount: orderItem.amount,
       };
     });
-    
+
     return {
       id: this.orderId,
       total: this.total,

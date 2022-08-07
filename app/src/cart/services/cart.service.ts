@@ -106,7 +106,7 @@ export class CartService {
     manager: EntityManager,
   ): Promise<CartAggregate> {
     const cartAggregate = new CartAggregate();
-    
+
     const setProducts = products.map(async (product: CartProduct) => {
       if (product.inventory < product.amount) {
         throw new ProductOutOfStockError(product.name);
@@ -119,11 +119,10 @@ export class CartService {
         .update({ id: product.id }, { inventory: newInventory });
 
       cartAggregate.products = product;
-    })
+    });
 
     await Promise.all(setProducts);
-    await manager
-      .getRepository(Product)
+    await manager.getRepository(Product);
     return cartAggregate;
   }
 

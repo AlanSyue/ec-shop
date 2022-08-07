@@ -34,34 +34,38 @@ describe('ProductController', () => {
   describe('test find all method', () => {
     it('should response ok', () => {
       const dto = new ProductQueryDto();
-      dto.skip = 0
-      dto.take = 10
+      dto.skip = 0;
+      dto.take = 10;
 
-      const expected = {}
+      const expected = {};
 
-      const serviceFindAllSpy = jest.spyOn(mockProductService, 'findAll')
+      const serviceFindAllSpy = jest
+        .spyOn(mockProductService, 'findAll')
         .mockImplementation(async () => {
-          return expected
+          return expected;
         });
 
       expect(controller.findAll(dto)).toEqual(Promise.resolve(expected));
       expect(serviceFindAllSpy).toBeCalledTimes(1);
       expect(serviceFindAllSpy).toBeCalledWith(dto.take, dto.skip);
     });
-  })
+  });
 
   describe('test find method', () => {
     it('should response ok', () => {
-      const response = {}
-      const productId = 1
-      const expected = {}
+      const response = {};
+      const productId = 1;
+      const expected = {};
 
-      const serviceFindSpy = jest.spyOn(mockProductService, 'find')
+      const serviceFindSpy = jest
+        .spyOn(mockProductService, 'find')
         .mockImplementation(async () => {
-          return expected
+          return expected;
         });
 
-      expect(controller.find(response as any, productId)).toEqual(Promise.resolve(expected));
+      expect(controller.find(response as any, productId)).toEqual(
+        Promise.resolve(expected),
+      );
       expect(serviceFindSpy).toBeCalledTimes(1);
       expect(serviceFindSpy).toBeCalledWith(productId);
     });
@@ -71,20 +75,20 @@ describe('ProductController', () => {
         status: jest.fn().mockImplementation().mockReturnValue(400),
         json: jest.fn().mockImplementation().mockReturnValue({
           error_code: ProductNotFoundError.ERROR_CODE,
-          error_message: ProductNotFoundError.ERROR_MESSAGE
+          error_message: ProductNotFoundError.ERROR_MESSAGE,
         }),
-      }
-      const productId = 1
+      };
+      const productId = 1;
 
-      const serviceFindSpy = jest.spyOn(mockProductService, 'find')
+      const serviceFindSpy = jest
+        .spyOn(mockProductService, 'find')
         .mockImplementation(async () => {
-          throw new ProductNotFoundError()
+          throw new ProductNotFoundError();
         });
 
-      const result = await controller.find(mockResponse as any, productId)
-      expect(result).toBe(mockResponse.json())
+      const result = await controller.find(mockResponse as any, productId);
+      expect(result).toBe(mockResponse.json());
       expect(serviceFindSpy).toBeCalledTimes(1);
-
     });
-  })
+  });
 });

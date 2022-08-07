@@ -17,15 +17,14 @@ describe('UserController', () => {
   });
 
   describe('test user profile', () => {
-    it('should return user data',() => {
-      const user = { id: 1, email: '2' }
-      const request = { user: user }
+    it('should return user data', () => {
+      const user = { id: 1, email: '2' };
+      const request = { user: user };
       const expected = {
-        data: user
-      }
-      
-      expect(controller.getProfile(request)).toEqual(expected)
+        data: user,
+      };
 
-    })
-  })
+      expect(controller.getProfile(request)).toEqual(expected);
+    });
+  });
 });
